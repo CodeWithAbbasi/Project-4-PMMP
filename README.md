@@ -1,4 +1,4 @@
-# Predictive Maintenance ML Pipeline
+# Project 4: Predictive Maintenance ML Pipeline
 
 A production-ready ML engineering pipeline for equipment failure prediction, built with FastAPI, XGBoost, MLflow, and automated CI/CD retraining.
 
