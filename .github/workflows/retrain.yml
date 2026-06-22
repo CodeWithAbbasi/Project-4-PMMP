@@ -1,0 +1,37 @@
+name: Automated Retraining
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly run at midnight on Sundays
+  workflow_dispatch:       # Allows manual trigger execution
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Check for drift
+      id: drift
+      run: |
+        python test_drift.py
+
+    - name: Retrain model
+      run: |
+        python retrain_pipeline.py
+
+    - name: Upload drift report
+      uses: actions/upload-artifact@v3
+      with:
+        name: drift-report
+        path: drift_report.json
